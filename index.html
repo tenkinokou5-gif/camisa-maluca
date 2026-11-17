@@ -312,7 +312,8 @@ body.em-transicao{overflow:hidden}
       <div class="who" id="s-nome"></div>
       <div class="label">Seu número é</div>
       <div class="bignum" id="s-num"></div>
-      <div class="warn" id="s-aviso">Seu amigo oculto chega por e-mail daqui a pelo menos <b id="s-horas"></b> horas, em <b id="s-email"></b>. Anote o número: ele é o seu código para ver de novo quem você tirou (junto com o seu nome). Olhe também a caixa de spam.</div>
+      <div class="warn" id="s-aviso">Seu amigo oculto chega por e-mail<span id="s-tempo"> daqui a pelo menos <b id="s-horas"></b> horas</span>, em <b id="s-email"></b>. Anote o número: ele é o seu código para ver de novo quem você tirou (junto com o seu nome). Olhe também a caixa de spam.</div>
+      <div class="warn" id="s-reserva" hidden></div>
       <div class="row"><button class="btn primary" id="btn-ver" type="button">Ver meu amigo oculto</button></div>
     </div>
   </section>
@@ -564,6 +565,9 @@ $('btn-confirmar').addEventListener('click', function () {
     guardarEu(r.nome, r.numero);
     $('s-nome').textContent = r.nome; $('s-num').textContent = r.numero;
     $('s-email').textContent = estado.pendente.email; $('s-horas').textContent = String(r.horas);
+    var sr = $('s-reserva');
+    if (r.reserva) { sr.hidden = false; sr.textContent = textoReserva(r.faltam, 'em no máximo ' + r.horas + ' horas'); } else { sr.hidden = true; sr.textContent = ''; }
+    $('s-tempo').hidden = !!r.reserva;
     $('form').reset();
     ir('sucesso');
   });
@@ -605,6 +609,9 @@ function mostrarResultado(r) {
     if (r.situacao === 'avisado') {
       $('w-titulo').textContent = 'Seu amigo oculto foi removido';
       $('w-msg').textContent = 'A pessoa que você tinha tirado não faz parte da turma. Assim que houver um novo par disponível você recebe outro e-mail e ele também aparece aqui. Não precisa fazer nada.';
+    } else if (r.reserva) {
+      $('w-titulo').textContent = 'Você está na reserva';
+      $('w-msg').textContent = textoReserva(r.faltam, r.liberaApos ? 'até ' + r.liberaApos : 'em algumas horas');
     } else {
       $('w-titulo').textContent = 'Cadastro confirmado';
       $('w-msg').textContent = 'Seu amigo oculto será liberado a partir de ' + (r.liberaApos || 'algumas horas depois do cadastro') + '. Você recebe por e-mail e também pode voltar aqui. Se ainda estiverem entrando pessoas, pode demorar um pouco mais.';
@@ -661,6 +668,8 @@ function desenharAdmin(d) {
   st.appendChild(h('span', { class: 'stat ok', text: d.liberados + ' já receberam' }));
   st.appendChild(h('span', { class: 'stat', text: aguardando + ' aguardando' }));
   st.appendChild(h('span', { class: 'stat' + (d.inscricoes === 'abertas' ? ' ok' : ''), text: 'Inscrições ' + d.inscricoes }));
+  if (d.liberacaoGeral) st.appendChild(h('span', { class: 'stat ok', text: 'Sorteio liberado em ' + d.liberacaoGeral }));
+  if (d.liberacaoGeral && d.inscricoes === 'abertas') st.appendChild(h('span', { class: 'stat', text: d.reserva + ' na reserva (saem ao juntar ' + d.reservaTamanho + ')' }));
   if (d.emailsNaFila) st.appendChild(h('span', { class: 'stat', text: d.emailsNaFila + ' e-mail(s) na fila (limite diário do Google, saem sozinhos)' }));
   if (d.info) st.appendChild(h('span', { class: 'stat', text: d.info }));
 
@@ -676,6 +685,12 @@ function desenharAdmin(d) {
     tb.appendChild(h('button', { class: 'btn light small', type: 'button', text: 'Reabrir inscrições',
       onclick: function () { adminCall('admin_reabrir').then(function (r) { if (r) desenharAdmin(r); }); } }));
   }
+  tb.appendChild(h('button', { class: 'btn primary small', type: 'button', text: 'Liberar sorteio agora',
+    onclick: function () {
+      confirmar('Liberar o sorteio agora?', 'As ' + aguardando + ' pessoas que ainda aguardam são sorteadas já, sem esperar as horas, e recebem o e-mail em poucos minutos (no máximo 30). Quem se cadastrar depois fica em reserva e só é sorteado ao juntar ' + d.reservaTamanho + ' pessoas, ou depois de ' + d.horas + ' horas.' + (d.inscricoes === 'abertas' ? ' Com as inscrições abertas, 1 pessoa espera entrar mais alguém, para ninguém ficar sem par. Para liberar todo mundo de uma vez, feche as inscrições.' : ''), 'Liberar agora', false).then(function (ok) {
+        if (ok) adminCall('admin_liberar').then(function (r) { if (r) desenharAdmin(r); });
+      });
+    } }));
   tb.appendChild(h('button', { class: 'btn light small', type: 'button', text: 'Enviar quem já pode agora',
     onclick: function () { adminCall('admin_processar').then(function (r) { if (r) desenharAdmin(r); }); } }));
   tb.appendChild(h('button', { class: 'btn light small', type: 'button', text: estado.adminShowDraw ? 'Esconder quem tirou quem' : 'Mostrar quem tirou quem (spoiler)',
@@ -712,6 +727,7 @@ function desenharAdmin(d) {
       sit = /^enviado/.test(se) ? 'Recebeu · e-mail enviado' : /^(pendente|enviando)/.test(se) ? 'Liberado · e-mail na fila (já vê na página)' : /^erro/.test(se) ? 'Liberado · e-mail com erro (' + se.replace(/^erro:\s*/, '') + ')' : 'Liberado' + (se ? ' · ' + se : '');
     }
     else if (!p.amigo && p.situacao === 'avisado') sit = 'Amigo removido, aguardando novo par';
+    else if (p.reserva && d.inscricoes === 'abertas') sit = 'Em reserva (sai ao juntar ' + d.reservaTamanho + ' ou após ' + (p.liberaApos || '—') + ')';
     else sit = d.inscricoes === 'fechadas' ? 'Aguardando' : 'Libera após ' + (p.liberaApos || '—');
     var tr = h('tr', null,
       h('td', { class: 'num', text: String(p.numero) }), h('td', { text: p.nome }), h('td', { text: p.email || '—' }), h('td', { text: p.camisa }),
