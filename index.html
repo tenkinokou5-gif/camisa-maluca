@@ -210,8 +210,11 @@ body.em-transicao{overflow:hidden}
 
 /* ---------- TEMPESTADE + CASTELO (a 6ª pessoa que fecha o grupo) ---------- */
 #cenario-castelo{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility 0s linear .45s;background:#05060f}
-body.tempestade #cenario-castelo{opacity:1;visibility:visible;transition-delay:0s}
-body.tempestade #doodles,body.tempestade #veil{display:none}
+body.tempestade #cenario-castelo,body.castelo #cenario-castelo{opacity:1;visibility:visible;transition-delay:0s}
+body.tempestade #doodles,body.tempestade #veil,body.castelo #doodles,body.castelo #veil{display:none}
+#castelinho{display:none;justify-content:center;margin:-2px auto 8px}
+body.castelo #castelinho{display:flex;animation:pop .6s cubic-bezier(.3,1.5,.5,1) both}
+#castelinho svg{height:128px;width:auto;border-radius:26px;box-shadow:0 0 0 3px #1d1530,0 0 26px rgba(125,155,255,.5)}
 #cenario-castelo svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 #cenario-castelo .nuvem{animation:nuvem 38s linear infinite alternate}
 #cenario-castelo .nuvem.b{animation-duration:55s;animation-direction:alternate-reverse}
@@ -261,16 +264,16 @@ body.tempestade #doodles,body.tempestade #veil{display:none}
 </div>
 <div id="veil" aria-hidden="true"></div>
 <div id="redemoinho" aria-hidden="true"><div class="swirl"><svg viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round"><path d="M4.0 0.0 L4.9 1.1 L5.5 2.6 L5.5 4.4 L5.1 6.3 L4.0 8.2 L2.3 9.9 L0.1 11.2 L-2.6 11.9 L-5.6 11.9 L-8.8 11.2 L-11.8 9.6 L-14.6 7.2 L-16.8 4.1 L-18.3 0.3 L-18.9 -4.0 L-18.5 -8.5 L-16.9 -13.0 L-14.3 -17.3 L-10.6 -20.9 L-5.9 -23.7 L-0.5 -25.5 L5.3 -25.9 L11.4 -25.1 L17.3 -22.7 L22.6 -19.0 L27.2 -14.0 L30.6 -7.9 L32.6 -0.9 L33.0 6.5 L31.7 14.1 L28.6 21.4 L23.8 28.0 L17.5 33.4 L9.9 37.5 L1.4 39.8 L-7.6 40.1 L-16.7 38.3 L-25.4 34.5 L-33.2 28.7 L-39.6 21.1 L-44.3 12.0 L-46.9 2.0 L-47.2 -8.7 L-45.0 -19.3 L-40.5 -29.4 L-33.6 -38.4 L-24.8 -45.8 L-14.3 -51.1 L-2.6 -54.0 L9.6 -54.3 L21.8 -51.7 L33.3 -46.5 L43.5 -38.6 L51.9 -28.5 L57.9 -16.6 L61.1 -3.4 L61.4 10.4 L58.5 24.1 L52.6 37.1 L43.7 48.6 L32.4 57.9 L19.0 64.6 L4.3 68.3 L-11.1 68.5 L-26.4 65.3 L-40.8 58.7 L-53.5 48.9 L-63.9 36.3 L-71.4 21.5 L-75.4 5.3 L-75.7 -11.7 L-72.2 -28.6 L-64.9 -44.4 L-54.1 -58.4 L-40.3 -69.9 L-24.2 -78.0 L-6.3 -82.5 L12.2 -82.8 L30.6 -79.0 L48.0 -71.1 L63.3 -59.4 L75.7 -44.4 L84.7 -26.9 L89.6 -7.5 L90.0 12.6 L85.9 32.6 L77.4 51.4 L64.8 68.0 L48.6 81.6 L29.7 91.3" stroke="#ff3d81" stroke-width="15"/><path d="M-2.0 3.5 L-3.4 3.7 L-5.0 3.4 L-6.6 2.6 L-8.0 1.2 L-9.1 -0.6 L-9.7 -2.9 L-9.7 -5.5 L-9.0 -8.2 L-7.5 -10.8 L-5.3 -13.2 L-2.4 -15.0 L1.0 -16.2 L4.9 -16.6 L8.9 -16.0 L12.9 -14.4 L16.6 -11.7 L19.8 -8.1 L22.1 -3.7 L23.4 1.3 L23.5 6.7 L22.3 12.3 L19.8 17.6 L16.0 22.4 L11.1 26.3 L5.1 29.1 L-1.5 30.5 L-8.5 30.4 L-15.5 28.7 L-22.2 25.3 L-28.0 20.4 L-32.8 14.1 L-36.1 6.6 L-37.7 -1.6 L-37.4 -10.2 L-35.1 -18.7 L-30.9 -26.7 L-24.8 -33.7 L-17.2 -39.3 L-8.2 -43.1 L1.6 -44.9 L11.7 -44.4 L21.7 -41.6 L31.1 -36.5 L39.2 -29.3 L45.7 -20.3 L50.1 -9.9 L52.0 1.5 L51.4 13.2 L48.1 24.7 L42.2 35.4 L33.9 44.7 L23.6 52.1 L11.7 57.0 L-1.2 59.2 L-14.6 58.4 L-27.6 54.7 L-39.7 48.0 L-50.1 38.6 L-58.4 27.0 L-63.9 13.6 L-66.3 -0.9 L-65.5 -15.8 L-61.3 -30.4 L-53.8 -43.9 L-43.4 -55.5 L-30.4 -64.7 L-15.6 -70.8 L0.5 -73.5 L17.0 -72.6 L33.1 -67.9 L48.0 -59.7 L60.8 -48.2 L70.9 -34.0 L77.7 -17.6 L80.7 0.0 L79.7 18.1 L74.6 35.7 L65.6 52.0 L53.1 66.1 L37.6 77.1 L19.8 84.5 L0.6 87.8 L-19.1 86.8 L-38.3 81.3 L-56.0 71.6 L-71.2 58.1 L-83.2 41.3 L-91.3 22.1 L-95.0 1.3 L-93.9 -20.0" stroke="#ffd23f" stroke-width="15"/><path d="M-2.0 -3.5 L-1.5 -4.8 L-0.5 -6.0 L1.0 -7.0 L2.9 -7.5 L5.1 -7.6 L7.4 -6.9 L9.6 -5.6 L11.6 -3.7 L13.2 -1.1 L14.1 2.0 L14.3 5.4 L13.5 9.0 L11.9 12.5 L9.4 15.7 L6.0 18.4 L1.8 20.3 L-2.8 21.2 L-7.8 21.0 L-12.8 19.6 L-17.6 17.0 L-21.8 13.2 L-25.1 8.4 L-27.4 2.7 L-28.3 -3.6 L-27.8 -10.1 L-25.7 -16.6 L-22.1 -22.6 L-17.1 -27.8 L-10.8 -31.8 L-3.6 -34.5 L4.2 -35.4 L12.3 -34.6 L20.2 -31.9 L27.5 -27.3 L33.7 -21.1 L38.5 -13.4 L41.6 -4.7 L42.6 4.8 L41.4 14.4 L38.1 23.8 L32.6 32.4 L25.1 39.6 L16.1 45.2 L5.8 48.6 L-5.2 49.7 L-16.4 48.3 L-27.3 44.3 L-37.1 37.9 L-45.5 29.3 L-51.8 18.8 L-55.7 7.0 L-56.9 -5.6 L-55.2 -18.4 L-50.6 -30.7 L-43.3 -41.8 L-33.5 -51.2 L-21.7 -58.4 L-8.4 -62.7 L5.8 -64.0 L20.2 -62.1 L34.0 -57.0 L46.5 -48.8 L57.0 -37.9 L64.9 -24.7 L69.8 -9.8 L71.2 6.0 L69.1 21.9 L63.4 37.2 L54.3 51.0 L42.3 62.6 L27.7 71.4 L11.3 76.8 L-6.0 78.4 L-23.6 76.1 L-40.3 69.9 L-55.5 59.9 L-68.2 46.7 L-77.9 30.8 L-83.8 13.0 L-85.6 -6.0 L-83.1 -25.1 L-76.4 -43.4 L-65.6 -59.9 L-51.3 -73.8 L-34.0 -84.3 L-14.7 -90.7 L5.8 -92.7 L26.5 -90.1 L46.3 -82.9 L64.2 -71.3" stroke="#7b2ff7" stroke-width="15"/><circle r="9" fill="#fff" stroke="none"/></svg></div><div class="rays"></div><div id="boom"></div></div>
-<div id="cenario-castelo" aria-hidden="true"><svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+<div id="cenario-castelo" aria-hidden="true"><svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
 <defs>
 <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03040c"/><stop offset=".55" stop-color="#17143a"/><stop offset="1" stop-color="#43306b"/></linearGradient>
 <radialGradient id="lua" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f4f6ff"/><stop offset=".6" stop-color="#cfd8ff"/><stop offset="1" stop-color="#cfd8ff" stop-opacity="0"/></radialGradient>
 </defs>
-<rect width="400" height="800" fill="url(#ceu)"/>
+<rect x="-3000" y="-3000" width="6400" height="3800" fill="#03040c"/><rect x="-3000" y="0" width="6400" height="800" fill="url(#ceu)"/>
 <circle cx="305" cy="150" r="70" fill="url(#lua)" opacity=".55"/><circle cx="305" cy="150" r="34" fill="#eef1ff"/>
-<g fill="#0c0b24"><ellipse class="nuvem" cx="90" cy="120" rx="130" ry="30" opacity=".95"/><ellipse class="nuvem b" cx="300" cy="190" rx="150" ry="34" opacity=".92"/><ellipse class="nuvem" cx="40" cy="270" rx="120" ry="26" opacity=".85"/><ellipse class="nuvem b" cx="360" cy="60" rx="110" ry="26" opacity=".95"/></g>
-<path d="M0 620 L60 590 L130 610 L200 570 L280 600 L350 575 L400 595 L400 800 L0 800Z" fill="#0d0b22"/>
-<g fill="#06050e">
+<g fill="#0c0b24"><ellipse class="nuvem" cx="90" cy="120" rx="130" ry="30" opacity=".95"/><ellipse class="nuvem b" cx="300" cy="190" rx="150" ry="34" opacity=".92"/><ellipse class="nuvem" cx="40" cy="270" rx="120" ry="26" opacity=".85"/><ellipse class="nuvem b" cx="360" cy="60" rx="110" ry="26" opacity=".95"/><ellipse class="nuvem" cx="-260" cy="160" rx="170" ry="34" opacity=".9"/><ellipse class="nuvem b" cx="690" cy="110" rx="180" ry="36" opacity=".9"/><ellipse class="nuvem" cx="-520" cy="60" rx="150" ry="30" opacity=".9"/><ellipse class="nuvem" cx="930" cy="240" rx="160" ry="32" opacity=".85"/></g>
+<path d="M-3000 620 L-80 620 L0 620 L60 590 L130 610 L200 570 L280 600 L350 575 L400 595 L480 600 L3400 600 L3400 1600 L-3000 1600Z" fill="#0d0b22"/>
+<g id="castelo-g"><g fill="#06050e">
 <rect x="150" y="470" width="100" height="230"/>
 <path d="M150 470 v-14 h12 v8 h12 v-8 h12 v8 h12 v-8 h12 v8 h12 v-8 h12 v14Z"/>
 <rect x="104" y="440" width="46" height="260"/><path d="M98 440 L127 372 L156 440Z"/>
@@ -279,7 +282,7 @@ body.tempestade #doodles,body.tempestade #veil{display:none}
 <rect x="64" y="520" width="40" height="180"/><path d="M60 520 L84 470 L108 520Z"/>
 <rect x="296" y="520" width="40" height="180"/><path d="M292 520 L316 470 L340 520Z"/>
 <path d="M200 268 V238 L222 246 L200 254" />
-<path d="M0 690 L400 690 L400 800 L0 800Z"/>
+<path d="M-3000 690 L3400 690 L3400 1600 L-3000 1600Z"/>
 <path d="M176 700 V620 a24 24 0 0 1 48 0 V700Z" fill="#000"/>
 </g>
 <g fill="#ffd23f">
@@ -291,7 +294,7 @@ body.tempestade #doodles,body.tempestade #veil{display:none}
 <rect class="janela" x="74" y="560" width="12" height="20" rx="6"/>
 <rect class="janela" x="314" y="560" width="12" height="20" rx="6"/>
 <rect class="janela" x="193" y="560" width="14" height="22" rx="7"/>
-</g>
+</g></g>
 <g fill="#06050e"><path d="M40 380 q10 -14 22 0 q10 -8 22 4 q-14 -4 -22 8 q-8 -12 -22 -12Z"/><path d="M330 330 q8 -12 18 0 q9 -7 18 3 q-12 -3 -18 7 q-7 -10 -18 -10Z"/><path d="M210 210 q7 -10 16 0 q8 -6 16 2 q-10 -2 -16 6 q-6 -8 -16 -8Z"/></g>
 </svg></div>
 <div id="trovao" aria-hidden="true"></div>
@@ -337,6 +340,7 @@ body.tempestade #doodles,body.tempestade #veil{display:none}
   <!-- ===== CADASTRO ===== -->
   <section class="view" id="v-cadastro">
     <div class="logo mini" role="img" aria-label="Dia da Camisa Maluca"></div>
+    <div id="castelinho" aria-hidden="true"><svg viewBox="50 250 300 270" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ceu2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05060f"/><stop offset="1" stop-color="#43306b"/></linearGradient></defs><rect x="50" y="250" width="300" height="270" rx="26" fill="url(#ceu2)"/><circle cx="305" cy="300" r="26" fill="#eef1ff"/><use href="#castelo-g"/></svg></div>
     <button class="back" data-go="home" type="button">← Voltar</button>
     <div class="panel">
       <div id="form-wrap">
@@ -396,12 +400,12 @@ body.tempestade #doodles,body.tempestade #veil{display:none}
     <div class="topo-raio">
       <div class="faixa">⚡ Cadastro feito… mas olha só ⚡</div>
       <h2 class="carao">Você foi o último a se inscrever, não foi?!</h2>
-      <p class="broncazinha">A turma toda já estava no sorteio e 5 colegas ficaram esperando no escuro, no meio da tempestade, só por sua causa. Da próxima vez, entre na hora que o link sair!</p>
+      <p class="broncazinha">A turma toda já estava no sorteio e alguns colegas ficaram esperando no escuro, no meio da tempestade, só por sua causa. Da próxima vez, entre na hora que o link sair!</p>
     </div>
     <div class="panel ticket cartao-raio">
       <div class="who" id="u-nome"></div>
       <div class="meu-num"><span>Seu número é</span><b id="u-num"></b></div>
-      <div class="warn">O grupo de 6 está completo: o sorteio sai em poucos minutos (até 30) e seu amigo oculto chega por e-mail em <b id="u-email"></b>. Anote o número: ele é o seu código para ver de novo quem você tirou (junto com o seu nome). Olhe também a caixa de spam.</div>
+      <div class="warn">Agora é só aguardar: o sorteio acontece sozinho e seu amigo oculto chega por e-mail em <b id="u-email"></b>, em poucos minutos (no máximo em <b id="u-horas"></b> horas). Anote o número: ele é o seu código para ver de novo quem você tirou (junto com o seu nome). Olhe também a caixa de spam.</div>
       <div class="row"><button class="btn primary" id="btn-ver-u" type="button">Ver meu amigo oculto</button></div>
     </div>
   </section>
@@ -601,6 +605,8 @@ function trocarTela(novo, nome, animar) {
   document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active', 'saindo', 'entrando'); });
   novo.classList.add('active');
   if (nome === 'ultimo') iniciarTempestade(); else if (document.body.classList.contains('tempestade')) pararTempestade();
+  estado.tela = nome;
+  if (nome !== 'cadastro') document.body.classList.remove('castelo');
   if (animar) { novo.classList.add('entrando'); setTimeout(function () { novo.classList.remove('entrando'); }, 1200); }
   document.getElementById('app').style.justifyContent = (nome === 'admin') ? 'flex-start' : 'center';
   window.scrollTo(0, 0);
@@ -655,9 +661,19 @@ function montarChips(tams) {
   });
 }
 
+/* Depois que o organizador libera o sorteio, quem entra no cadastro vê o castelo ao fundo (sem trovão ainda) */
+function aplicarCastelo() {
+  var st = estado.status;
+  var on = !!(st && st.liberado && st.inscricoes !== 'fechadas' && estado.tela === 'cadastro');
+  document.body.classList.toggle('castelo', on);
+}
 $('btn-cadastro').addEventListener('click', function () {
   $('form-wrap').hidden = false; $('review-wrap').hidden = true; mostrarErro('err-cad', '');
+  var st = estado.status;
+  estado.tela = 'cadastro';
+  if (st && st.liberado && st.inscricoes !== 'fechadas') document.body.classList.add('castelo');
   ir('cadastro');
+  carregarStatus().then(aplicarCastelo);   // confere de novo (o botão pode ter sido apertado depois que a página abriu)
 });
 $('btn-consulta').addEventListener('click', function () { var eu = lerEu(); if (eu) prepararConsulta(eu); mostrarErro('err-con', ''); ir('consulta'); });
 function prepararConsulta(eu) { $('c-nome').value = eu.nome; $('c-num').value = eu.numero; }
@@ -689,10 +705,10 @@ $('btn-confirmar').addEventListener('click', function () {
     $('s-nome').textContent = r.nome; $('s-num').textContent = r.numero;
     $('s-email').textContent = estado.pendente.email; $('s-horas').textContent = String(r.horas);
     var sr = $('s-reserva');
-    if (r.reserva) { sr.hidden = false; sr.textContent = textoReserva(r.faltam, 'em no máximo ' + r.horas + ' horas'); } else { sr.hidden = true; sr.textContent = ''; }
+    if (r.reserva) { sr.hidden = false; sr.textContent = textoEspera('em no máximo ' + r.horas + ' horas'); } else { sr.hidden = true; sr.textContent = ''; }
     $('s-tempo').hidden = !!r.reserva;
     $('form').reset();
-    if (r.ultimo) { $('u-nome').textContent = r.nome; $('u-num').textContent = r.numero; $('u-email').textContent = estado.pendente.email; ir('ultimo'); return; }
+    if (r.reserva) { $('u-horas').textContent = String(r.horas); $('u-nome').textContent = r.nome; $('u-num').textContent = r.numero; $('u-email').textContent = estado.pendente.email; ir('ultimo'); return; }
     ir('sucesso');
   });
 });
@@ -734,12 +750,9 @@ function mostrarResultado(r) {
     if (r.situacao === 'avisado') {
       $('w-titulo').textContent = 'Seu amigo oculto foi removido';
       $('w-msg').textContent = 'A pessoa que você tinha tirado não faz parte da turma. Assim que houver um novo par disponível você recebe outro e-mail e ele também aparece aqui. Não precisa fazer nada.';
-    } else if (r.separada) {
-      $('w-titulo').textContent = 'Você está esperando a 6ª pessoa';
-      $('w-msg').textContent = textoSeparada(r.faltam, r.liberaApos ? 'até ' + r.liberaApos : 'em algumas horas');
-    } else if (r.reserva) {
-      $('w-titulo').textContent = 'Você está na reserva';
-      $('w-msg').textContent = textoReserva(r.faltam, r.liberaApos ? 'até ' + r.liberaApos : 'em algumas horas');
+    } else if (r.separada || r.reserva) {
+      $('w-titulo').textContent = 'Você está na fila de espera';
+      $('w-msg').textContent = textoEspera(r.liberaApos ? 'até ' + r.liberaApos : 'em algumas horas');
     } else {
       $('w-titulo').textContent = 'Cadastro confirmado';
       $('w-msg').textContent = 'Seu amigo oculto será liberado a partir de ' + (r.liberaApos || 'algumas horas depois do cadastro') + '. Você recebe por e-mail e também pode voltar aqui. Se ainda estiverem entrando pessoas, pode demorar um pouco mais.';
@@ -823,7 +836,7 @@ function desenharAdmin(d) {
         if (aguardando >= 8 && impar) corpo += 'Como o total é ÍMPAR, 5 pessoas escolhidas ao acaso ficam em reserva esperando uma 6ª pessoa; quando ela se cadastrar, os 6 são sorteados entre si e recebem em até 30 minutos. ';
         else if (impar) corpo += 'Como o total é ímpar, quem ficar sem par espera mais alguém se cadastrar. ';
         else corpo += 'O total é par, então todo mundo é liberado de uma vez. ';
-        corpo += 'Quem se cadastrar depois também entra na reserva e só é sorteado ao juntar ' + d.reservaTamanho + ' pessoas (a 6ª leva um carão com trovão e castelo), ou depois de ' + d.horas + ' horas.';
+        corpo += 'Quem se cadastrar depois vê a tela de tempestade com castelo (e o celular treme) e fica esperando: o grupo só é sorteado ao juntar ' + d.reservaTamanho + ' pessoas, ou depois de ' + d.horas + ' horas. Essa regra dos ' + d.reservaTamanho + ' só aparece aqui para você, as pessoas não veem o número.';
         if (d.inscricoes === 'fechadas') corpo += ' Com as inscrições fechadas, todo mundo é liberado de uma vez.';
         confirmar('Liberar o sorteio agora?', corpo, 'Liberar agora', false).then(function (ok) {
           if (ok) adminCall('admin_liberar').then(function (r) { if (r) desenharAdmin(r); });
