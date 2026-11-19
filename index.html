@@ -754,17 +754,17 @@ function montarChips(tams) {
   });
 }
 
-/* Quem entra no cadastro vê o castelo ao fundo (sem trovão ainda) */
+/* O castelo ao fundo no cadastro aparece só para quem vai fechar o grupo (o servidor informa; sem número nenhum) */
 function aplicarCastelo() {
   var st = estado.status;
-  var on = !!(st && st.inscricoes !== 'fechadas' && estado.tela === 'cadastro');
+  var on = !!(st && st.fechaGrupo && st.inscricoes !== 'fechadas' && estado.tela === 'cadastro');
   document.body.classList.toggle('castelo', on);
 }
 $('btn-cadastro').addEventListener('click', function () {
   $('form-wrap').hidden = false; $('review-wrap').hidden = true; mostrarErro('err-cad', '');
   var st = estado.status;
   estado.tela = 'cadastro';
-  if (st && st.inscricoes !== 'fechadas') document.body.classList.add('castelo');
+  if (st && st.fechaGrupo && st.inscricoes !== 'fechadas') document.body.classList.add('castelo');
   ir('cadastro');
   carregarStatus().then(aplicarCastelo);   // confere de novo (o botão pode ter sido apertado depois que a página abriu)
 });
@@ -841,6 +841,9 @@ function mostrarResultado(r) {
     if (r.situacao === 'avisado') {
       $('w-titulo').textContent = 'Seu amigo oculto foi removido';
       $('w-msg').textContent = 'A pessoa que você tinha tirado não faz parte da turma. Assim que houver um novo par disponível você recebe outro e-mail e ele também aparece aqui. Não precisa fazer nada.';
+    } else if (r.fila && r.longa) {
+      $('w-titulo').textContent = 'Você continua aguardando';
+      $('w-msg').textContent = 'Ainda é preciso entrar mais gente para o seu sorteio poder rodar. Você continua na fila de espera e não precisa fazer nada: assim que o grupo fechar, seu amigo oculto chega por e-mail e também aparece aqui.';
     } else if (r.fila) {
       $('w-titulo').textContent = 'Você está na fila de espera';
       $('w-msg').textContent = 'O sorteio roda assim que entrar mais gente e formar um novo grupo. Seu amigo oculto chega por e-mail e também aparece aqui. Não precisa fazer nada nem ficar nesta página.';
@@ -900,7 +903,7 @@ function desenharAdmin(d) {
   st.appendChild(h('span', { class: 'stat ok', text: d.liberados + ' já receberam' }));
   st.appendChild(h('span', { class: 'stat', text: aguardando + ' aguardando' }));
   st.appendChild(h('span', { class: 'stat' + (d.inscricoes === 'abertas' ? ' ok' : ''), text: 'Inscrições ' + d.inscricoes }));
-  if (d.fila && d.inscricoes === 'abertas') st.appendChild(h('span', { class: 'stat', text: d.fila + ' na fila de espera (o grupo fecha ao juntar ' + d.grupoTamanho + ')' }));
+  if (d.fila && d.inscricoes === 'abertas') st.appendChild(h('span', { class: 'stat', text: d.fila + ' na fila de espera (o grupo fecha quando o total ficar par, com pelo menos ' + d.grupoMinimo + ')' }));
   st.appendChild(h('span', { class: 'stat', text: 'Espera: ' + d.minutos + ' min' }));
   if (d.emailsNaFila) st.appendChild(h('span', { class: 'stat', text: d.emailsNaFila + ' e-mail(s) na fila (limite diário do Google, saem sozinhos)' }));
   if (d.info) st.appendChild(h('span', { class: 'stat', text: d.info }));
@@ -923,7 +926,7 @@ function desenharAdmin(d) {
         var prontos = d.participantes.filter(function (p) { return p.espera && !p.fila; }).length;
         var impar = prontos % 2 === 1;
         var corpo = 'As ' + prontos + ' pessoas que ainda aguardam o tempo de espera são sorteadas já, só entre si, e recebem o e-mail em poucos minutos. Quem já foi sorteado não muda. ';
-        if (prontos >= 1 && impar) corpo += 'Como o total é ÍMPAR, até 5 pessoas escolhidas ao acaso ficam na fila de espera até juntar ' + d.grupoTamanho + ' pessoas (quem entrar depois vai para essa fila). Essa regra só aparece aqui para você: as pessoas não veem o número. ';
+        if (prontos >= 1 && impar) corpo += 'Como o total é ÍMPAR, TODAS ficam na fila de espera até o total ficar par com pelo menos ' + d.grupoMinimo + ' pessoas (quem entrar depois vai para essa fila). Essa regra só aparece aqui para você: as pessoas não veem o número. ';
         else corpo += 'O total é par, então todas recebem de uma vez. ';
         confirmar('Sortear agora?', corpo, 'Sortear agora', false).then(function (ok) {
           if (ok) adminCall('admin_liberar').then(function (r) { if (r) desenharAdmin(r); });
